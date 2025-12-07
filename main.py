@@ -5,8 +5,8 @@ import torch.nn as nn
 from tqdm import tqdm
 import copy
 
-from models_vit import ViTHead, ViTBackbone, ViTTail
-from data_utils import get_dataloader, Attacker, calculate_accuracy
+from models.model_vit import ViTHead, ViTBackbone, ViTTail
+from utils.data_utils import get_dataloader, Attacker, calculate_accuracy
 from safesplit import SafeSplitDefense
 
 # Load Config
