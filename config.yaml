@@ -1,0 +1,42 @@
+experiment:
+  name: "SafeSplit_ViT_Evasion_Test"
+  random_seed: 42
+
+system:
+  num_clients: 10
+  malicious_clients: [8, 9] # Indices of attackers
+  rounds: 50
+  device: "cuda" # or "cpu"
+
+model:
+  type: "ViT"
+  image_size: 32
+  patch_size: 4
+  num_classes: 10
+  dim: 512 # Increase for "Big Model" simulation
+  depth: 6 # Total transformer layers
+  heads: 8
+  mlp_dim: 1024
+  # Split configuration for U-Shaped
+  cut_layer_1: 1 # Layers in Head
+  cut_layer_2: 4 # Layers in Backbone (indices 2, 3, 4) -> Tail gets remaining
+
+training:
+  batch_size: 64
+  lr: 0.001
+  momentum: 0.9
+  weight_decay: 0.0001
+
+attack:
+  active: True
+  start_round: 40 # LATE EPOCH ATTACK (Test your hypothesis here)
+  type: "pixel_pattern"
+  target_label: 0
+  poison_ratio: 0.5 # % of batch poisoned by attacker
+  trigger_size: 3
+
+defense:
+  active: True
+  method: "SafeSplit"
+  history_len: 10 # Keep track of last N models (usually = num_clients)
+  safe_majority_threshold: 0.6 # n/2 + 1 roughly
